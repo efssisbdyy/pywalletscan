@@ -1,2 +1,2 @@
 # pywalletscan
-Python wrapper implementation of etherscan
+A Python wrapper implementation of Etherscan
