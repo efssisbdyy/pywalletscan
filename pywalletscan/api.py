@@ -6,7 +6,14 @@ import sys
 
 # 5calls/sec: Etherscan limit for free account
 DEFAULT_WAIT_SEC=0.2
-url_base = "https://api.etherscan.io/api"
+
+def get_url(network):
+    if network.lower() == "goerli":
+        return "https://api-goerli.etherscan.io/api"
+    elif network.lower() == "sepolia":
+        return "https://api-sepolia.etherscan.io/api"
+    # Dfault: ETH
+    return "https://api.etherscan.io/api"
 
 def get_abi(address, api_key):
     payload = {
@@ -29,7 +36,7 @@ def decode_input(address, data):
     fn, value = contract.decode_function_input(data)
     return fn, value
 
-def get_transaction(address="", api_key=""):
+def get_transaction(address="", api_key="", network="ETH"):
     payload = {
         "module":"account",
         "action":"txlist",
@@ -39,5 +46,5 @@ def get_transaction(address="", api_key=""):
         "sort": "asc",
         "apikey": {api_key}
     }
-    res = requests.get(url_base, params=payload)
+    res = requests.get(get_url(network), params=payload)
     return res.json()["result"]
